@@ -67,25 +67,30 @@ function Login() {
 
   }
 
-  const handleSubmit = (event) => {
+  async function loginUser(credentials) {
+    // const {user_name, user_password} = credentials;
+ return fetch('https://dummyjson.com/auth/login', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    
+    username: 'kminchelle',
+    password: '0lelplR',
+    // expiresInMins: 60, // optional
+  })
+})
+.then(data => data.json())
+
+
+}
+
+  const handleSubmit = async(event) => {
     event.preventDefault();
     if(validation()) {
-      console.log("Funtion called1 ", inputValue.username, inputValue.password, 'All')
-      const loggedUser = async () => {
-        const data = await fetch('https://dummyjson.com/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            
-            username: 'kminchelle',
-            password: '0lelplR',
-          })
-        })
-        .then(res => res.json()).then((data) => {
-          console.log("Fetched Data", data)
-        });
-       }
-       console.log("Logged User Info ", loggedUser)
+      const data = await loginUser(inputValue);
+      const {token} = data;
+      sessionStorage.setItem('token', JSON.stringify(token));
+       console.log("Logged User Info ", token)
     } else {
       console.log("Form Not Submitted!")
     }
