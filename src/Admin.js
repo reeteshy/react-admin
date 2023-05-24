@@ -12,6 +12,11 @@ import Post from './admin/Post'
 import Protected from './Protected'
 
 function Admin() {
+
+  const title = {
+    product : 'All Product'
+  }
+
   return (
     <>
     <BrowserRouter >
@@ -20,7 +25,7 @@ function Admin() {
             <Route path='/' element={<Login />}></Route>
             <Route path='/login' element={<Login />}></Route>
             <Route path='/register' element={<Register />}></Route>
-            <Route path='/admin/' element={<Protected Component={Master} />}>
+            <Route path='/admin/' element={<Protected Component={Master} title={title.product} />}>
               <Route index element={<Dashboard />} />
               <Route path='product' element={<Product />} />
               <Route path='user' element={<Users />} />
