@@ -33,13 +33,16 @@ function Login() {
         setErrorValidation({...errorValidation})
       }
       setErrorValidation({...errorValidation, ...error})
+      console.log("Validatioons are ", errorValidation)
     } else {
       setErrorValidation({})
     }
 
     if (Object.keys(errorValidation).length>0) {
+      console.log("Validation Failed")
       return false;
     } else {
+      console.log("Validation Done", errorValidation)
       setIsFormSubmit(true)
       return true;
     }
@@ -76,7 +79,6 @@ function Login() {
     
     username: 'kminchelle',
     password: '0lelplR',
-    // expiresInMins: 60, // optional
   })
 })
 .then(data => data.json())

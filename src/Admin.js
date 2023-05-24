@@ -9,20 +9,18 @@ import Master from './admin/layout/Master'
 import Product from './admin/Product'
 import Users from './admin/Users'
 import Post from './admin/Post'
+import Protected from './Protected'
 
 function Admin() {
   return (
     <>
     <BrowserRouter >
-        {/* <ul>
-            <li><Link to='/'>Login</Link></li>
-            <li><Link to='/register'>Register</Link></li>
-            <li><Link to='/admin'>Dashboard</Link></li>
-        </ul> */}
         <Routes >
+          
             <Route path='/' element={<Login />}></Route>
+            <Route path='/login' element={<Login />}></Route>
             <Route path='/register' element={<Register />}></Route>
-            <Route path='/admin/' element={<Master />}>
+            <Route path='/admin/' element={<Protected Component={Master} />}>
               <Route index element={<Dashboard />} />
               <Route path='product' element={<Product />} />
               <Route path='user' element={<Users />} />
