@@ -14,36 +14,42 @@ function Login() {
 
   
   useEffect(()=>{
-    console.log("inputValue", errorValidation)
+    console.log("inputValue validation ", errorValidation)
   }, [errorValidation])
 
   const validation = () => {
-    let error = {};
+    console.log("Called validation function")
+    let error = errorValidation;
+    const regexPattern  = /^[a-zA-Z0-9]+$/;
     if(inputValue.username === '' || inputValue.password === '') {
       if(inputValue.username === '') {
-        error.username = 'Please Enter User Name!';
+        console.log("Valida Blanck")
+        error.username = 'Please Enter Blanck Name!';
+      } else if (inputValue.username.length < 6 || !regexPattern.test(inputValue.username)) {
+        console.log("Valida lenght")
+        error.username = "Please enter valid username!";
       } else {
-        delete errorValidation.username;
-        setErrorValidation({...errorValidation})
+        console.log("Valida")
+        delete error.username;
       }
       if(inputValue.password === '') {
+        console.log("Password not enterned")
         error.password = 'Please Enter Password!';
       } else {
-        delete errorValidation.password;
-        setErrorValidation({...errorValidation})
+        console.log("Password enterned")
+        delete error.password;
       }
-      setErrorValidation({...errorValidation, ...error})
-      console.log("Validatioons are ", errorValidation)
-    } else {
-      setErrorValidation({})
-    }
+    } 
 
-    if (Object.keys(errorValidation).length>0) {
-      console.log("Validation Failed")
+    console.log(" Length ", Object.keys(error).length,  " Value0 ", error)
+
+    if (Object.keys(error).length>0) { 
+      setErrorValidation({...error})
+      console.log("Validations are ", error)
+      setIsFormSubmit(false)
       return false;
     } else {
-      console.log("Validation Done", errorValidation)
-      setIsFormSubmit(true)
+      setIsFormSubmit(false)
       return true;
     }
   }
@@ -52,22 +58,11 @@ function Login() {
     const name = event.target.name;
     const value = event.target.value;
     setInputValue({...inputValue, [name]: value})
-    const re = /^\S*$/;
-    if (inputValue.username.length < 6 || !re.test(inputValue.username)) {
-      setErrorValidation({...errorValidation, username: "Please enter valid username."})
-    } else {
-      delete errorValidation.username;
-      setErrorValidation({...errorValidation})
+    const validationStatus = validation();
+    console.log("validationStatus ", validationStatus)
+    if(validationStatus) {
+      console.log("Validaion true")
     }
-
-    
-    if (inputValue.username.length < 6 || !re.test(inputValue.username)) {
-      setErrorValidation({...errorValidation, username: "Please enter valid username."})
-    } else {
-      delete errorValidation.username;
-      setErrorValidation({...errorValidation})
-    }
-
   }
 
   async function loginUser(credentials) {
@@ -88,7 +83,9 @@ function Login() {
 
   const handleSubmit = async(event) => {
     event.preventDefault();
-    if(validation()) {
+    const validationStatus = validation();
+    console.log("validationStatus ", validationStatus)
+    if(validationStatus) {
       const data = await loginUser(inputValue);
       const {token} = data;
       sessionStorage.setItem('token', JSON.stringify(token));
@@ -124,7 +121,7 @@ function Login() {
                 <span id="exampleInputEmail1-error" className="error invalid-feedback">{errorValidation.username}</span>
               </div>
               <div className="input-group mb-3">
-                <input type="password" name="password" className={ errorValidation.password ? 'form-control is-invalid' : 'form-control'} currentvalue={inputValue.password} onChange={(e)=>{setInputValue({...inputValue, password : e.target.value})}}  placeholder="Password" />
+                <input type="password" name="password" className={ errorValidation.password ? 'form-control is-invalid' : 'form-control'} currentvalue={inputValue.password} onChange={(e)=>handleChange(e)} placeholder="Password" />
                 <div className="input-group-append">
                   <div className="input-group-text">
                     <span className="fas fa-lock"></span>

@@ -67,12 +67,6 @@ function Sidebar() {
                   <p>Posts</p>
                 </NavLink>
               </li>
-              <li className="nav-item">
-                <NavLink to='/logout' className="nav-link">
-                    <i className="pi pi--circle nav-icon"></i>
-                  <p>Logout</p>
-                </NavLink>
-              </li>
             </ul>
           </li>
         </ul>
