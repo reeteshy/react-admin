@@ -9,22 +9,26 @@ function Login() {
     password : ''
   })
   const [errorValidation, setErrorValidation] = useState({})
+
   const [isSubmit, setIsFormSubmit] = useState(false)
 
   
   useEffect(()=>{
-    console.log(" OnChange value of filed and object in Useeffect ", inputValue)
+    console.log("inputValue validation ", errorValidation)
   }, [errorValidation])
 
   const validation = () => {
     console.log("Called validation function")
     let error = errorValidation;
+    const regexPattern  = /^[a-zA-Z0-9]+$/;
     if(inputValue.username === '' || inputValue.password === '') {
       if(inputValue.username === '') {
-        console.log("Control comes in blanck username?")
+        console.log("Valida Blanck")
         error.username = 'Please Enter Blanck Name!';
+      } else if (inputValue.username.length < 6 || !regexPattern.test(inputValue.username)) {
+        console.log("Valida lenght")
+        error.username = "Please enter valid username!";
       } else {
-        console.log("Control comes in delete username?")
         console.log("Valida")
         delete error.username;
       }
@@ -38,7 +42,7 @@ function Login() {
       }
     } 
 
-    console.log(" Length ", Object.keys(error).length,  " Value0 ", error, inputValue)
+    console.log(" Length ", Object.keys(error).length,  " Value0 ", error)
 
     setErrorValidation({...error})
     if (Object.keys(error).length>0) { 
@@ -55,7 +59,7 @@ function Login() {
     const name = event.target.name;
     const value = event.target.value;
     setInputValue({...inputValue, [name]: value})
-    console.log(" OnChange value of filed and object ", name, value, inputValue)
+    console.log(" Bygd ", name, value, inputValue)
     const validationStatus = validation();
     console.log("validationStatus ", validationStatus)
     if(validationStatus) {
